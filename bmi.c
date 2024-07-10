@@ -7,15 +7,17 @@
 2.provide necessary range
 3.calculate bmi
 4.calulate with range
-4.show status
-5.what must improve (weight,height and by how much)
+5.show status
+6.what must improve (weight,height and by how much)
 */
 
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
+
 
 int userinput(int initial, char* text,char* unit);
-float calculate(int weight, int height, int wrange, int hrange);
+float calculate(int weight, int height);
+int *range(int weight, int height, int wrange, int hrange);
 
 int main(void)
 {
@@ -29,8 +31,30 @@ int main(void)
     const int hrange = 2;
 
     //calculate
-    float bmi = calculate(weight, height, wrange, hrange);
-    printf("bmi: %f\n",bmi);
+    float bmi = calculate(weight, height);
+    int rlimit;
+    int llimit;
+    int *limits = range(weight, height, wrange, hrange);
+
+    if (limits[0]>limits[1]){
+        rlimit = limits[0];
+    }
+    else{
+        rlimit = limits[1];
+    }
+    if (limits[2]<limits[3]){
+        llimit = limits[2];
+    }
+    else{
+        llimit = limits[3];
+    }
+
+    free(limits);
+
+    //status
+    printf("BMI: %f\n",bmi);
+    printf("Range: %i-%i\n",llimit, rlimit);
+
     
 }
 
@@ -47,9 +71,26 @@ int userinput(int initial, char* text,char* unit){
     return input;
 }
 
-float calculate(int weight, int height, int wrange, int hrange){
-    //mid 
+float calculate(int weight, int height){
     float bmi = weight/((float)(height*height)/10000);
     bmi = (float)((int)(bmi*10))/10;
-    return bmi;
+    return bmi;    
 }
+
+int *range(int weight, int height, int wrange, int hrange){
+    int *rbmi = malloc(4*sizeof(int));
+    if (rbmi == NULL){
+        printf("memory not allocated.");
+    }
+    // rbmi -- max weight, min height, min weight, max height
+    //1st 2 items -- largest value, last 2 items -- smallest value
+    //the array just makes the data understandable (nothing else)
+    rbmi[0] = calculate(weight+wrange, height);
+    rbmi[1] = calculate(weight, height-hrange);
+    rbmi[2] = calculate(weight-wrange, height);
+    rbmi[3] = calculate(weight, height+hrange);
+    return rbmi;
+}
+
+
+
