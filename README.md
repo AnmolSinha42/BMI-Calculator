@@ -1,4 +1,4 @@
-#BMI Caluculator
+# BMI Calculator
 
 This is a BMI calculator that has the following features:
 <ul>
