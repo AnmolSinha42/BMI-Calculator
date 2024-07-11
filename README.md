@@ -1,3 +1,5 @@
+#BMI Caluculator
+
 This is a BMI calculator that has the following features:
 <ul>
   <li>Calculates your BMI while also giving a range to take into account appropriate error margins in the given values.</li>
